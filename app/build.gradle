@@ -35,7 +35,10 @@ android {
 }
 
 task ndkBuild(type: Exec) {
-    def ndkDir = android.ndkDirectory.getAbsolutePath()
+    //def ndkDir = android.ndkDirectory.getAbsolutePath()
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+    def ndkDir = properties.getProperty('ndk.dir')
     if (Os.isFamily(Os.FAMILY_WINDOWS)) {
         commandLine ndkDir + '\\ndk-build.cmd', '-C', file('src/main').absolutePath
     } else {
@@ -44,7 +47,10 @@ task ndkBuild(type: Exec) {
 }
 
 task ndkClean(type: Exec) {
-    def ndkDir = android.ndkDirectory.getAbsolutePath()
+    //def ndkDir = android.ndkDirectory.getAbsolutePath()
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+    def ndkDir = properties.getProperty('ndk.dir')
     if (Os.isFamily(Os.FAMILY_WINDOWS)) {
         commandLine ndkDir + '\\ndk-build.cmd', '-C', file('src/main').absolutePath, 'clean'
     } else {
